@@ -10,12 +10,12 @@ export class BaseApi {
   }
 
   errorProcessor(error: any): void {
-    console.info(error);
+    console.error('error', error);
     throw error;
   }
 
   generateUrl(path: string, data: any): string {
-    const url = `${this.basePath}${path}`;
+    const url = `${this.host}${this.basePath}${path}`;
 
     if (path.toLowerCase() === 'get') {
       return `${url}?${new URLSearchParams(data)}`;
@@ -27,14 +27,19 @@ export class BaseApi {
   async request(method: string, path: string, data: any): Promise<any> {
     const dataWithKey = {
       ...data,
-      key: window.localStorage.get('key'),
+      key: window.localStorage.getItem('password') || undefined,
     };
+    const url = this.generateUrl(path, dataWithKey);
+    const body = method.toLowerCase() === 'get' ? undefined : JSON.stringify(dataWithKey);
+
+    console.info('data ->', data);
+    console.info('url ->', url);
+    console.info('body ->', body);
+    console.info('method ->', method);
 
     try {
-      const response = await fetch(this.generateUrl(path, dataWithKey), {
-        method,
-        body: method.toLowerCase() === 'get' ? undefined : JSON.stringify(dataWithKey),
-        headers: {
+      const response = await window.fetch(url, {
+        method, body, headers: {
           'Content-type': 'application/json'
         }
       });
@@ -45,19 +50,21 @@ export class BaseApi {
     }
   }
 
-  async get(path: string, data: any): Promise<any> {
+  async get(path: string = '', data: any = {}): Promise<any> {
+    console.info('call get must call request');
+    await this.request('get', path, data);
+    return;
+  }
+
+  async post(path: string = '', data: any = {}): Promise<any> {
     return this.request('get', path, data);
   }
 
-  async post(path: string, data: any): Promise<any> {
+  async put(path: string = '', data: any = {}): Promise<any> {
     return this.request('get', path, data);
   }
 
-  async put(path: string, data: any): Promise<any> {
-    return this.request('get', path, data);
-  }
-
-  async delete(path: string, data: any): Promise<any> {
+  async delete(path: string = '', data: any = {}): Promise<any> {
     return this.request('get', path, data);
   }
 }

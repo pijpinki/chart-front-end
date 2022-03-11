@@ -6,10 +6,14 @@ import './assets/base.css';
 import App from './App.vue';
 import router from './router';
 
-const app = createApp(App);
+// @ts-ignore
+window.pavel = createApp(App);
 
-app.use(createPinia());
-app.use(router);
-app.use(Vant);
-
-app.mount('#app');
+// @ts-ignore
+window.pavel.use(createPinia());
+// @ts-ignore
+window.pavel.use(router);
+// @ts-ignore
+window.pavel.use(Vant);
+// @ts-ignore
+window.pavel.mount('#app');

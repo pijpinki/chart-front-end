@@ -1,4 +1,3 @@
 export default {
-  // @ts-ignore
-  host: process.env.VUE_APP_HOST || 'localhost:3030'
+  host: 'http://localhost:3030'
 }
