@@ -1,19 +1,23 @@
 import { inject } from 'vue';
 
-export const loadingsHook = async (func: Function): Promise<any> => {
-  const loading = inject('loading');
-  const error = inject('error');
+let loading: any = null;
+let error: any = null;
 
-  // @ts-ignore
+export const loadingsHook = async (func: Function): Promise<any> => {
+  if (!loading) {
+    loading = inject('loading');
+  }
+  if (!error) {
+    error = inject('error');
+  }
+
   loading.value = true;
 
   try {
     await func();
   } catch (e) {
-    // @ts-ignore
     error.value = e;
   } finally {
-    // @ts-ignore
     loading.value = false;
   }
 };
