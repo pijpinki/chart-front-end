@@ -1,12 +1,17 @@
+import config from '@/config';
+
 export class BaseApi {
-  private basePath: string;
+  private readonly basePath: string;
+  private readonly host: string;
 
   constructor(basePath: string) {
     this.basePath = basePath;
+    this.host = config.host;
   }
 
   errorProcessor(error: any): void {
     console.info(error);
+    throw error;
   }
 
   generateUrl(path: string, data: any): string {
@@ -20,10 +25,15 @@ export class BaseApi {
   }
 
   async request(method: string, path: string, data: any): Promise<any> {
+    const dataWithKey = {
+      ...data,
+      key: window.localStorage.get('key'),
+    };
+
     try {
-      const response = await fetch(this.generateUrl(path, data), {
+      const response = await fetch(this.generateUrl(path, dataWithKey), {
         method,
-        body: method.toLowerCase() === 'get' ? undefined : JSON.stringify(data),
+        body: method.toLowerCase() === 'get' ? undefined : JSON.stringify(dataWithKey),
         headers: {
           'Content-type': 'application/json'
         }
