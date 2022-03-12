@@ -2,7 +2,7 @@
   <van-nav-bar title="Русский корабыль иди на хуй!">
     <template #right>
       <van-button class="margin">
-        <router-link to="stats">Втрати вогора</router-link>
+        <router-link to="/">Втрати вогора</router-link>
       </van-button>
       <van-button class="margin">
         <router-link to="heroes">Наші Герої</router-link>
