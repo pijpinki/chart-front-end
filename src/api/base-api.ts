@@ -14,10 +14,10 @@ export class BaseApi {
     throw error;
   }
 
-  generateUrl(path: string, data: any): string {
+  generateUrl(method: string, path: string, data: any): string {
     const url = `${this.host}${this.basePath}${path}`;
 
-    if (path.toLowerCase() === 'get') {
+    if (method.toLowerCase() === 'get') {
       return `${url}?${new URLSearchParams(data)}`;
     }
 
@@ -29,10 +29,10 @@ export class BaseApi {
       ...data,
       key: window.localStorage.getItem('password') || undefined,
     };
-    const url = this.generateUrl(path, dataWithKey);
+    const url = this.generateUrl(method, path, dataWithKey);
     const body = method.toLowerCase() === 'get' ? undefined : JSON.stringify(dataWithKey);
 
-    console.info('data ->', data);
+    console.info('data ->', dataWithKey);
     console.info('url ->', url);
     console.info('body ->', body);
     console.info('method ->', method);
