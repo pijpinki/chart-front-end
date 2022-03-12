@@ -13,17 +13,23 @@ export class VpnApi extends BaseApi {
       name: String(item.name),
       key: String(item.key),
       date: new Date(item.date),
-    }
+    };
   }
 
   async getVpnList(): Promise<VpnItem[]> {
     const response = await this.get();
-    
-    return response.map(this.normalizeItem)
+
+    return response.map(this.normalizeItem);
   }
 
   async addVpn(name: string): Promise<VpnItem[]> {
     const response = await this.post('', { name });
+
+    return response.map(this.normalizeItem);
+  }
+
+  async deleteVpn(id: number): Promise<VpnItem[]> {
+    const response = await this.delete(`/${id}`);
 
     return response.map(this.normalizeItem);
   }
