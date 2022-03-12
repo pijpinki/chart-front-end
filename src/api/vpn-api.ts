@@ -7,14 +7,24 @@ export class VpnApi extends BaseApi {
     super('/vpn');
   }
 
-  async getVpnList(): Promise<VpnItem[]> {
-    const response = await this.get();
-
-    return response.map((item: any) => ({
+  normalizeItem(item: any): VpnItem {
+    return {
       id: parseInt(item.id, 10),
       name: String(item.name),
       key: String(item.key),
       date: new Date(item.date),
-    }))
+    }
+  }
+
+  async getVpnList(): Promise<VpnItem[]> {
+    const response = await this.get();
+    
+    return response.map(this.normalizeItem)
+  }
+
+  async addVpn(name: string): Promise<VpnItem[]> {
+    const response = await this.post('', { name });
+
+    return response.map(this.normalizeItem);
   }
 }

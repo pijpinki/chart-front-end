@@ -51,20 +51,18 @@ export class BaseApi {
   }
 
   async get(path: string = '', data: any = {}): Promise<any> {
-    console.info('call get must call request');
-    await this.request('get', path, data);
-    return;
+    return this.request('get', path, data);
   }
 
   async post(path: string = '', data: any = {}): Promise<any> {
-    return this.request('get', path, data);
+    return this.request('post', path, data);
   }
 
   async put(path: string = '', data: any = {}): Promise<any> {
-    return this.request('get', path, data);
+    return this.request('put', path, data);
   }
 
   async delete(path: string = '', data: any = {}): Promise<any> {
-    return this.request('get', path, data);
+    return this.request('delete', path, data);
   }
 }

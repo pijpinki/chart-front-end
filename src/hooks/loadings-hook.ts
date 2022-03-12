@@ -16,6 +16,7 @@ export const loadingsHook = async (func: Function): Promise<any> => {
   try {
     await func();
   } catch (e) {
+    console.error(e);
     error.value = e;
   } finally {
     loading.value = false;

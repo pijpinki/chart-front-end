@@ -2,6 +2,16 @@
   <div>
     <access-input @apply="applyPasswordHandle"/>
   </div>
+  <div>
+    <add-vpn @apply="addVpnHandle"/>
+  </div>
+  <div>
+    <vpn-card
+      v-for="vpn in vpnList"
+      :key="vpn.id"
+      :vpn="vpn"
+    />
+  </div>
   <div>{{ vpnList.length }}</div>
 </template>
 
@@ -9,7 +19,7 @@
 import { onMounted, ref } from 'vue';
 import { loadingsHook } from '../hooks';
 import { vpnApi } from '../api';
-import AccessInput from '../components/AccessInput.vue';
+import { AccessInput, AddVpn, VpnCard } from '../components';
 
 const vpnList = ref([]);
 
@@ -19,6 +29,12 @@ const loadList = async () => {
 
 const applyPasswordHandle = () => {
   loadingsHook(loadList);
+}
+
+const addVpnHandle = ({ name }) => {
+  loadingsHook(async () => {
+    vpnList.value = await vpnApi.addVpn(name);
+  })
 }
 
 onMounted(() => {
