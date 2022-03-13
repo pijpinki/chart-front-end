@@ -9,30 +9,66 @@
     </van-button>
 
     <div class="form">
-      <van-form>
+      <van-form @submit="submitHandle">
         <van-cell-group>
           <ui-picker
+            class="field"
             label="Type"
             placeholder="Select type"
-            :options="[]"
+            :options="options"
+            :value="values.type"
+            @change="values.type = $event"
           />
           <van-field
+            class="field"
+            v-model="values.count"
             label="Count"
             placeholder="Count"
             type="number"
           />
+          <van-field
+            class="field"
+            v-model="values.day"
+            label="Day"
+            placeholder="Day"
+            type="number"
+          />
+          <van-field
+            class="field"
+            v-model="values.mounts"
+            label="Mounts"
+            placeholder="Mounts"
+            type="number"
+          />
         </van-cell-group>
+
+        <van-button class="field" round block type="primary" native-type="submit">
+          Save
+        </van-button>
       </van-form>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import _ from 'lodash';
+import { onMounted, reactive, ref } from 'vue';
+import { TYPES } from '@/constants';
 import UiPicker from './UiPicker.vue';
 
+const options = _.values(TYPES);
 const isAddAllowed = ref(false);
 const showAddForm = ref(false);
+const values = reactive({
+  type: '',
+  count: 0,
+  day: new Date().getDay(),
+  mounts: new Date().getMonth(),
+});
+
+const submitHandle = () => {
+  alert('submit');
+};
 
 onMounted(() => {
   isAddAllowed.value = !!window.localStorage.getItem('password');
@@ -53,5 +89,9 @@ onMounted(() => {
   background-color: var(--van-card-background-color);
   margin-top: var(--margin-medium);
   padding: var(--margin-medium);
+}
+
+.add-stats .form .field {
+  margin-top: var(--margin-medium);
 }
 </style>

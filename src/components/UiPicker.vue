@@ -11,14 +11,14 @@
   <van-popup v-model:show="showPicker" position="bottom">
     <van-picker
       :columns="options"
-      @confirm="emit('change', $event)"
+      @confirm="showPicker = false; emit('change', $event)"
       @cancel="showPicker = false"
     />
   </van-popup>
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from 'vue';
+import { ref } from 'vue';
 
 defineProps({
   placeholder: { type: String },

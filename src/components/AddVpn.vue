@@ -23,7 +23,7 @@
 
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 
 const name = ref('');
 const expand = ref([]);
