@@ -20,4 +20,13 @@ export class StatsApi extends BaseApi {
 
     return res.map(this.normalizeItem);
   }
+
+  async addStats(stats: StatsItem): Promise<StatsItem[]> {
+    const res = await this.post('', {
+      ...stats,
+      date: stats.date.getTime(),
+    });
+
+    return res.map(this.normalizeItem);
+  }
 }

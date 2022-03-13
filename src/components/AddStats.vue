@@ -1,6 +1,7 @@
 <template>
   <div v-if="isAddAllowed" class="add-stats">
     <van-button
+      v-if="!showAddForm"
       @click="showAddForm = true"
       type="primary"
       class="add-button"
@@ -8,7 +9,7 @@
       Add
     </van-button>
 
-    <div class="form">
+    <div class="form" v-if="showAddForm">
       <van-form @submit="submitHandle">
         <van-cell-group>
           <ui-picker
@@ -56,18 +57,35 @@ import { onMounted, reactive, ref } from 'vue';
 import { TYPES } from '@/constants';
 import UiPicker from './UiPicker.vue';
 
+const emit = defineEmits(['save']);
+
 const options = _.values(TYPES);
 const isAddAllowed = ref(false);
 const showAddForm = ref(false);
 const values = reactive({
   type: '',
   count: 0,
-  day: new Date().getDay(),
+  day: new Date().getDate(),
   mounts: new Date().getMonth(),
 });
 
+const generateDate = () => {
+  const date = new Date();
+  date.setSeconds(0);
+  date.setMinutes(0);
+  date.setHours(0);
+  date.setDate(values.day);
+  date.setMonth(values.mounts);
+
+  return date;
+}
+
 const submitHandle = () => {
-  alert('submit');
+  showAddForm.value = false;
+  emit('save', {
+    ...values,
+    date: generateDate()
+  });
 };
 
 onMounted(() => {
